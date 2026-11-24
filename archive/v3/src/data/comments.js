@@ -1,0 +1,28 @@
+// Real comments from the campaign report ("comments grid" + the single card),
+// verbatim, typos included. app = where the comment was left (icon of the notification).
+
+export const COMMENTS = [
+  { user: 'Giorgia Radaelli', text: 'cel’ho anchioooo😍😍', app: 'tiktok' },
+  { user: 'aleale', text: 'IO AMO QUESTO REGGISENO LO DEVO COMPRAREEEE', app: 'tiktok' },
+  { user: 'shirandra214', text: 'Confermo, lo adoro è comodissimo 😍', app: 'instagram' },
+  { user: 'jobri_mind', text: 'wow! me l’hai venduto bene, vado subito a cercarlo😍', app: 'instagram' },
+  { user: 'Matilde Sarti', text: 'i reggiseni di Intimissimi >>>>>>>', app: 'tiktok' },
+  { user: 'beatricepedrali', text: 'Li voglio anche iooooo mi hai convinta', app: 'instagram' },
+  { user: 'Arianna.solarin', text: 'L’ho comprato lunedì e tornerò sicuramente a prenderlo di altri colori perché è troppo comodo 😍', app: 'tiktok' },
+  { user: 'Mary', text: 'Intimissimi top!!!!💖💖💖', app: 'tiktok' },
+  { user: 'sofi🌟', text: 'ragazze prendetelii, li ho comprati qualche giorno fa e mi sto trovando benissimo!', app: 'tiktok' },
+  { user: 'carmen_balosin', text: 'I swear that bra is sooo comfortable!!🙌❤️', app: 'instagram' },
+  { user: 'michyy.', text: 'amo è comodissimo io c’è looo😍', app: 'tiktok' },
+  { user: 'barbara🎀', text: 'l’ho comprato anche io ieri, stupendo 😍', app: 'tiktok' },
+  { user: 'giuliabarbagelata', text: 'Finalmente un reggiseno comodo ❤️ grazie Giuliiii', app: 'instagram' },
+  { user: 'Gemma Langiu', text: 'Lo voglio subitoooooo!!!! Ti sta da Dio ❤️', app: 'tiktok' },
+  { user: 'sharon.quarta', text: 'ok mi serve assolutamente, io odio portarlo letteralmente dopo un’ora vorrei già toglierlo, proverò questo 🤍', app: 'tiktok' },
+  { user: 'faby._.1983', text: 'Vero, comodo quasi come non averlo 👏approvato', app: 'instagram' },
+  { user: 'Sara Graziano💎', text: 'e comodissimo sotto le magliettine attillate', app: 'tiktok' },
+  { user: 'ValeGlow', text: 'Domai dritta da Intimissimi! Ho bisogno di un reggiseno così ora 😍', app: 'tiktok' },
+  { user: 'Michela Sichel', text: 'amooooo ❤️poi marrone così stupendo io lo userei anche come top ahahah', app: 'tiktok' },
+  { user: 'Laura Squarcini', text: 'grazie ero proprio curiosa di sapere come è questo reggiseno... andrò a provarlo sicuramente 😉', app: 'tiktok' },
+  { user: 'francescadanna52', text: 'Molto belli, mia nipote sarà contentissima di ricevere un regalo del genere.', app: 'tiktok' },
+  { user: 'giulivaxen', text: 'Che bello! È comodo così come sembra dalle foto?😍', app: 'instagram' },
+  { user: 'Deborah Cappelletto', text: 'Ma sostiene?', app: 'tiktok' },
+]

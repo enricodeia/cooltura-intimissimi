@@ -1,0 +1,100 @@
+// Small maths + the GSAP easing engine (every animation in the film is a pure
+// function of time: value = lerp(a, b, ease(progress)), so scrubbing and the
+// frame-exact export always agree).
+
+import gsap from 'gsap'
+import { CustomEase } from 'gsap/CustomEase'
+
+gsap.registerPlugin(CustomEase)
+
+export const TAU = Math.PI * 2
+export const DEG = Math.PI / 180
+export const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x))
+export const lerp = (a, b, t) => a + (b - a) * t
+export const invLerp = (a, b, x) => (b === a ? (x >= b ? 1 : 0) : (x - a) / (b - a))
+export const smooth = (t) => t * t * (3 - 2 * t)
+export const fract = (x) => x - Math.floor(x)
+export const mod = (x, m) => ((x % m) + m) % m
+
+/** Deterministic 0..1 noise from an integer-ish seed. */
+export function hash(n) {
+  const s = Math.sin(n * 127.1 + 311.7) * 43758.5453123
+  return s - Math.floor(s)
+}
+export const hash2 = (a, b) => hash(a * 12.9898 + b * 78.233)
+
+/** Wrap x into [-span/2, span/2). */
+export const wrapSym = (x, span) => mod(x + span / 2, span) - span / 2
+
+// ---------------------------------------------------------------- easing
+
+// "Elastic bounce" as one authored curve: overshoot to ~1.3, dip under, settle.
+CustomEase.create('coolBounce', 'M0,0 C0.1,0 0.17,1.42 0.34,1.22 0.48,1.06 0.5,0.92 0.64,0.972 0.78,1.02 0.86,1 1,1')
+// Fast attack, long soft landing (camera moves).
+CustomEase.create('coolGlide', 'M0,0 C0.3,0 0.14,1 1,1')
+// Slow start, whip, settle (zoom out).
+CustomEase.create('coolWhip', 'M0,0 C0.6,0 0.1,1 1,1')
+
+const cache = new Map()
+const linear = (x) => x
+
+/** Easing function by GSAP name: 'power3.out', 'back.out(1.6)', 'elastic.out(1,0.5)', 'coolBounce', 'cubic(x1,y1,x2,y2)'. */
+export function ease(name) {
+  if (!name || name === 'none' || name === 'linear') return linear
+  let f = cache.get(name)
+  if (f) return f
+  const cb = /^cubic\(([^)]+)\)$/.exec(name)
+  if (cb) {
+    const v = cb[1].split(',').map(Number)
+    f = v.length === 4 && v.every(Number.isFinite) ? CustomEase.create('cb' + cache.size, v.join(',')) : linear
+  } else {
+    f = gsap.parseEase(name) || linear
+  }
+  cache.set(name, f)
+  return f
+}
+
+/** Eased progress of t through [t0, t0 + d]. */
+export function seg(t, t0, d, e = 'none') {
+  const x = d <= 0 ? (t >= t0 ? 1 : 0) : clamp((t - t0) / d)
+  return ease(e)(x)
+}
+
+/** 0 → 1 over the `tin` seconds after t0, back to 0 over the `tout` seconds before t1. */
+export function inOut(t, t0, t1, tin, tout, ein = 'power2.out', eout = 'power2.in') {
+  const a = seg(t, t0, tin, ein)
+  const b = 1 - seg(t, t1 - tout, tout, eout)
+  return Math.min(a, b)
+}
+
+export const EASES = [
+  'none',
+  'power1.out', 'power2.out', 'power3.out', 'power4.out', 'expo.out', 'circ.out',
+  'power2.in', 'power3.in', 'expo.in',
+  'power2.inOut', 'power3.inOut', 'power4.inOut', 'expo.inOut',
+  'back.out(1.4)', 'back.out(1.7)', 'back.out(2.2)', 'back.inOut(1.4)',
+  'elastic.out(1,0.5)', 'elastic.out(1,0.35)',
+  'bounce.out',
+  'coolBounce', 'coolGlide', 'coolWhip',
+]
+
+// ---------------------------------------------------------------- colour
+
+export function hexToRgb(hex) {
+  const h = hex.replace('#', '')
+  const n = parseInt(h.length === 3 ? h.split('').map((c) => c + c).join('') : h, 16)
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
+}
+export function mixHex(a, b, t) {
+  const A = hexToRgb(a)
+  const B = hexToRgb(b)
+  const c = A.map((v, i) => Math.round(lerp(v, B[i], t)))
+  return '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('')
+}
+
+export const fmtTime = (t) => {
+  const s = Math.max(0, t)
+  const m = Math.floor(s / 60)
+  const r = s - m * 60
+  return `${String(m).padStart(2, '0')}:${r.toFixed(2).padStart(5, '0')}`
+}

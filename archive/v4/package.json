@@ -1,0 +1,32 @@
+{
+  "name": "cooltura-intimissimi",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5410",
+    "build": "vite build",
+    "media": "bash tools/media.sh",
+    "shot": "node tools/shot.mjs",
+    "ship": "vite build && rm -rf .vercel/output && mkdir -p .vercel/output/static && cp -R dist/. .vercel/output/static/ && echo '{\"version\":3,\"routes\":[{\"src\":\"/(.*)\",\"headers\":{\"X-Robots-Tag\":\"noindex, nofollow\"},\"continue\":true}]}' > .vercel/output/config.json && vercel deploy --prebuilt --prod --yes"
+  },
+  "dependencies": {
+    "@fontsource/caveat": "^5.3.0",
+    "@fontsource/instrument-sans": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0",
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/sharp-regular-svg-icons": "^7.3.1",
+    "@fortawesome/sharp-solid-svg-icons": "^7.3.1",
+    "fflate": "^0.8.3",
+    "gsap": "^3.15.1",
+    "mediabunny": "^1.66.0",
+    "opentype.js": "^2.0.0",
+    "roughjs": "^4.6.6",
+    "three": "0.187.0"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0",
+    "vite": "^8.3.5"
+  }
+}
